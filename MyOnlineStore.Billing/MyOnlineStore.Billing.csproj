@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Akka" Version="1.4.43" />
+    <PackageReference Include="Akka.Cluster" Version="1.4.43" />
+    <PackageReference Include="Akka.Persistence" Version="1.4.43" />
+    <PackageReference Include="Akka.Persistence.SqlServer" Version="1.4.35" />
+    <PackageReference Include="Akka.Remote" Version="1.4.43" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyOnlineStore.Billing.Actors\MyOnlineStore.Billing.Actors.csproj" />
+    <ProjectReference Include="..\MyOnlineStore.Billing.Refs\MyOnlineStore.Billing.Refs.csproj" />
+    <ProjectReference Include="..\OnlineStore.Extensions\OnlineStore.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Billing.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
