@@ -8,5 +8,6 @@ namespace MyOnlineStoreAPI.Refs
 
         public static IActorRef? CatalogActorRouter { get; set; }
         public static IActorRef? CheckOutActor { get; set; }
+        public static IActorRef? CheckoutShardingActor { get; set; }
     }
 }

@@ -62,6 +62,7 @@ namespace MyOnlineStore.Billing.Actors
             
             CommandAny(_ =>
             {
+                _logger.Info(_.ToString());
                 Stash.Stash();
                 Sender.Tell(new ServiceUnavailableResponse("Recovering Cart State"));
             });
@@ -73,6 +74,10 @@ namespace MyOnlineStore.Billing.Actors
             Command<GetUserCartCommand>(HandleGetUserCartCommand);
             Command<SaveSnapshotSuccess>(HandleSuccessSnapshot);
             Command<SaveSnapshotFailure>(failure => _logger.Error(failure.Cause.ToString()));
+            CommandAny(_ =>
+            {
+                _logger.Info(_.ToString());
+            });
         }
 
         #endregion

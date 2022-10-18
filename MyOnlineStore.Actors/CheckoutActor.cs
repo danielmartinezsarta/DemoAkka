@@ -8,6 +8,8 @@ using Akka.Event;
 using Akka.Routing;
 using MyOnlineStore.Messages.Billing;
 using MyOnlineStore.Messages.Billing.Commands;
+using MyOnlineStore.Messages.Sharding;
+using MyOnlineStoreAPI.Refs;
 
 namespace MyOnlineStore.Actors
 {
@@ -24,8 +26,10 @@ namespace MyOnlineStore.Actors
                 _logger.Warning("Receiving message");
                 //var remoteActor = Context.ActorSelection("akka.tcp://online-store@localhost:8088/user/dispatcher-router");
 
-                Sender.Tell(await _router.Ask(new ConsistentHashableEnvelope(d, d.ProductName)
-                    ));
+                //Sender.Tell(await _router.Ask(new ConsistentHashableEnvelope(d, d.ProductName)));
+                Sender.Tell(await ActorDirectory.CheckoutShardingActor.Ask(new
+                    ShardEnvelope(d.User, d.User, d)));
+
             });
         }
 

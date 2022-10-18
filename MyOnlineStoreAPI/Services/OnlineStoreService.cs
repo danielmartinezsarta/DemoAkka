@@ -1,8 +1,11 @@
 ﻿using Akka.Actor;
+using Akka.Cluster;
+using Akka.Cluster.Sharding;
 using Akka.Configuration;
 using Akka.Routing;
 using MyOnlineStore.Actors;
 using MyOnlineStore.Messages;
+using MyOnlineStore.Messages.Sharding;
 using MyOnlineStoreAPI.Refs;
 using OnlineStore.Extensions;
 
@@ -32,10 +35,21 @@ namespace MyOnlineStoreAPI.Services
 
             ActorDirectory.CatalogActorRouter.Tell(new StartSystemMessage());
 
-            var checkoutActorProps = Props.Create(() => new CheckoutActor());
 
-            ActorDirectory.CheckOutActor =
-                ActorDirectory.ActorSystem.ActorOf(checkoutActorProps, "checkout");
+            Cluster.Get(ActorDirectory.ActorSystem).RegisterOnMemberUp(() =>
+            {
+                var checkoutActorProps = Props.Create(() => new CheckoutActor());
+                ActorDirectory.CheckOutActor =
+                    ActorDirectory.ActorSystem.ActorOf(checkoutActorProps, "checkout");
+
+
+                var sharding = ClusterSharding.Get(ActorDirectory.ActorSystem);
+                
+                ActorDirectory.CheckoutShardingActor = sharding.StartProxy("cartactor", "users", new ShardMessageRouter());
+            });
+
+
+           
 
             
 
